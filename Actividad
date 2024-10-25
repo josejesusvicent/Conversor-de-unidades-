@@ -1,0 +1,74 @@
+Public Class ConversorDeUnidades
+    ' constantes a convertir 
+    Private Const KILOGRAMO As Double = 1000
+    Private Const GRAMO As Double = 1
+    Private Const MILIGRAMO As Double = 0.001
+    Private Const KILOMETRO As Double = 1000
+    Private Const METRO As Double = 1
+    Private Const MILIMETRO As Double = 0.001
+
+    Private Sub Conversor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ComboBoxTipo.Items.AddRange(New String() {"Masa", "Distancia"})
+        ComboBoxTipo.SelectedIndex = 0
+        CargarUnidades("Masa")
+        txtValor.Text = "0"
+    End Sub
+
+    Private Sub CargarUnidades(tipoSeleccionado As String)
+        ComboBoxdesdeA.Items.Clear()
+        ComboBoxhastaB.Items.Clear()
+
+        Dim unidades As String() = If(Seleccionado = "Masa",
+            New String() {"Kilogramo", "Gramo", "Miligramo"},
+            New String() {"Kilómetro", "Metro", "Milímetro"}
+        )
+
+        ComboBoxdesdeA.Items.AddRange(unidades)
+        ComboBoxhastaB.Items.AddRange(unidades)
+        ComboBoxdesdeA.SelectedIndex = 0
+        ComboBoxhastaB.SelectedIndex = 1
+    End Sub
+
+    Private Sub ComboBoxTipo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxTipo.SelectedIndexChanged
+        CargarUnidades(ComboBoxTipo.SelectedItem.ToString())
+    End Sub
+
+    Private Sub btnConvertir_Click(sender As Object, e As EventArgs) Handles btnConvertir.Click
+        Dim valorIngresado As Double
+
+        If String.IsNullOrWhiteSpace(txtValor.Text) Then
+            Dim inputValor As String = InputBox("valor a convertir:")
+            If Not Double.TryParse(inputValor, valorIngresado) Then
+                MessageBox.Show("ingrese un número.")
+                Return
+            End If
+        ElseIf Not Double.TryParse(txtValor.Text, valorIngresado) Then
+            MessageBox.Show("ingrese un número.")
+            Return
+        End If
+
+        Dim resultadoConversion As Double = CalcularConversion(valorIngresado)
+        lblResultado.Text = resultadoConversion.ToString("F3")
+    End Sub
+
+    Private Function CalcularConversion(cantidad As Double) As Double
+        Dim factorDesde As Double = ObtenerFactor(ComboBoxDesde.SelectedItem.ToString())
+        Dim factorHasta As Double = ObtenerFactor(ComboBoxHasta.SelectedItem.ToString())
+        Return (cantidad * factorDesde) / factorHasta
+    End Function
+
+    Private Function ObtenerFactor(unidadSeleccionada As String) As Double
+        Select Case unidadSeleccionada
+            Case "Kilogramo": Return KILOGRAMO
+            Case "Gramo": Return GRAMO
+            Case "Miligramo": Return MILIGRAMO
+            Case "Kilómetro": Return KILOMETRO
+            Case "Metro": Return METRO
+            Case "Milímetro": Return MILIMETRO
+            Case Else: Return 1 
+        End Select
+    End Function
+
+End Class
+
+' código realizado por J.V_Chino🔱
