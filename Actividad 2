@@ -1,0 +1,81 @@
+Class Libro
+
+    Private titulo As String
+    Private autor As String
+    Private disponible As Boolean
+
+    Public Sub New(titulo As String, autor As String)
+        titulo = titulo
+        autor = autor
+        disponible = True
+    End Sub
+
+    Public Property Titulo As String
+        Get
+            Return titulo
+        End Get
+        Set(value As String)
+            titulo = value
+        End Set
+    End Property
+
+    Public Property Autor As String
+        Get
+            Return autor
+        End Get
+        Set(value As String)
+            autor = value
+        End Set
+    End Property
+
+    Public Property Disponible As Boolean
+        Get
+            Return disponible
+        End Get
+        Set(value As Boolean)
+            disponible = value
+        End Set
+    End Property
+
+    Public Sub PrestarLibro()
+        If disponible Then
+            disponible = False
+            MessageBox.Show("el libro ha sido prestado")
+        Else
+            MessageBox.Show("el libro no está disponible")
+        End If
+    End Sub
+
+    Public Sub DevolverLibro()
+        If Not disponible Then
+            disponible = True
+            MessageBox.Show("El libro ha sido devuelto.")
+        Else
+            MessageBox.Show("El libro está disponible.")
+        End If
+    End Sub
+End Class
+
+Public Class Form1
+    Private miLibro As Libro
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        miLibro = New Libro("Romeo y Julieta", "Leonardo Dicaprio")
+        Label1.Text = "Estado del libro: " & If(miLibro.Disponible, "Disponible", "No disponible")
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        
+        miLibro.PrestarLibro()
+        Label1.Text = "Estado del libro: " & If(miLibro.Disponible, "Disponible", "No disponible")
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+ 
+        miLibro.DevolverLibro()
+        Label1.Text = "Estado del libro: " & If(miLibro.Disponible, "Disponible", "No disponible")
+    End Sub
+End Class
+```
+'codigo realizado por J.V_Chino🔱
